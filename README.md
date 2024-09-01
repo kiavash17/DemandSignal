@@ -1,11 +1,11 @@
 
-# AI-Driven Demand Forecasting Dashboard
+# AI-Driven Demand Forecasting Dashboard (Updated)
 
-This repository contains a Streamlit app for an AI-driven demand forecasting platform. The app provides trend analysis, sentiment analysis, and predictive analytics features to help startups gauge market demand and understand public sentiment.
+This repository contains an updated version of the Streamlit app and Flask backend for an AI-driven demand forecasting platform. The app provides trend analysis, sentiment analysis, and predictive analytics features to help startups gauge market demand and understand public sentiment.
 
 ## Features
 
-- **Trend Analysis**: Visualize trends over time for different keywords.
+- **Trend Analysis**: Visualize trends over time for different keywords using data fetched from a Flask backend.
 - **Sentiment Analysis**: Analyze public sentiment from social media posts.
 - **Predictive Analytics**: Placeholder for future predictive analytics features.
 
@@ -20,8 +20,8 @@ This repository contains a Streamlit app for an AI-driven demand forecasting pla
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/ai-demand-forecasting.git
-   cd ai-demand-forecasting
+   git clone https://github.com/your-username/ai-demand-forecasting-updated.git
+   cd ai-demand-forecasting-updated
    ```
 
 2. Install the required packages:
@@ -31,18 +31,19 @@ This repository contains a Streamlit app for an AI-driven demand forecasting pla
 
 ### Running the App
 
-Run the Streamlit app locally:
-```
-streamlit run app.py
-```
+1. Start the Flask backend:
+   ```
+   python backend.py
+   ```
+
+2. Run the Streamlit app:
+   ```
+   streamlit run app.py
+   ```
 
 ### Deployment
 
-To deploy the app on Streamlit Community Cloud:
-
-1. Push the repository to your GitHub account.
-2. Go to [Streamlit Community Cloud](https://share.streamlit.io/).
-3. Connect your GitHub repository and deploy.
+To deploy the app on Streamlit Community Cloud or another platform, follow the steps in the README file.
 
 ## License
 
