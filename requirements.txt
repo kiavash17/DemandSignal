@@ -6,3 +6,9 @@ textblob
 flask
 flask-executor
 requests
+yfinance
+tweepy
+prophet
+matplotlib
+redis
+Flask-Caching

@@ -1,12 +1,14 @@
 
-# AI-Driven Demand Forecasting Dashboard (Updated)
+# AI-Driven Demand Forecasting Dashboard (Versioned)
 
-This repository contains an updated version of the Streamlit app and Flask backend for an AI-driven demand forecasting platform. The app provides trend analysis, sentiment analysis, and predictive analytics features to help startups gauge market demand and understand public sentiment.
+This repository contains the AI-Driven Demand Forecasting platform, now with integrated advanced predictive analytics, financial data, and social media sentiment analysis.
 
 ## Features
 
 - **Trend Analysis**: Visualize trends over time for different keywords using data fetched from a Flask backend.
-- **Sentiment Analysis**: Analyze public sentiment from social media posts.
+- **Demand Forecasting**: Predict future trends using Facebook Prophet's time series forecasting model.
+- **Financial Data Integration**: Analyze financial market data using Yahoo Finance API.
+- **Social Media Sentiment Analysis**: Perform sentiment analysis on real-time tweets related to specific market trends.
 - **Predictive Analytics**: Placeholder for future predictive analytics features.
 
 ## Getting Started
@@ -20,8 +22,8 @@ This repository contains an updated version of the Streamlit app and Flask backe
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/ai-demand-forecasting-updated.git
-   cd ai-demand-forecasting-updated
+   git clone https://github.com/your-username/ai-demand-forecasting-v1.git
+   cd ai-demand-forecasting-v1
    ```
 
 2. Install the required packages:
