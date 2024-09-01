@@ -1,7 +1,7 @@
 
 # AI-Driven Demand Forecasting Dashboard (Versioned)
 
-This repository contains the AI-Driven Demand Forecasting platform, now with integrated advanced predictive analytics, financial data, and social media sentiment analysis.
+This repository contains the AI-Driven Demand Forecasting platform, which now includes integrated advanced predictive analytics, financial data, and social media sentiment analysis, along with a unified script to run both the backend and frontend applications.
 
 ## Features
 
@@ -9,6 +9,7 @@ This repository contains the AI-Driven Demand Forecasting platform, now with int
 - **Demand Forecasting**: Predict future trends using Facebook Prophet's time series forecasting model.
 - **Financial Data Integration**: Analyze financial market data using Yahoo Finance API.
 - **Social Media Sentiment Analysis**: Perform sentiment analysis on real-time tweets related to specific market trends.
+- **Unified Execution**: A single script (`run_all.py`) to run both the backend and frontend simultaneously, streamlining the development workflow.
 - **Predictive Analytics**: Placeholder for future predictive analytics features.
 
 ## Getting Started
@@ -17,6 +18,7 @@ This repository contains the AI-Driven Demand Forecasting platform, now with int
 
 - Python 3.7 or higher
 - pip (Python package installer)
+- Redis server (for caching purposes)
 
 ### Installation
 
@@ -33,19 +35,29 @@ This repository contains the AI-Driven Demand Forecasting platform, now with int
 
 ### Running the App
 
-1. Start the Flask backend:
+1. **Data Preparation**:
+   - Generate sample data if not already present by running:
    ```
-   python backend.py
+   python create_data.py
    ```
 
-2. Run the Streamlit app:
+2. **Unified Execution**:
+   - Run both the Flask backend and Streamlit frontend with a single command:
    ```
-   streamlit run app.py
+   python run_all.py
    ```
+
+   This script will start the backend and frontend together, making the development process more efficient.
 
 ### Deployment
 
 To deploy the app on Streamlit Community Cloud or another platform, follow the steps in the README file.
+
+### Future Enhancements
+
+- **Machine Learning Models**: Additional predictive models for enhanced forecasting.
+- **Expanded Data Sources**: More data sources for comprehensive demand insights.
+- **User Authentication and Management**: Enhanced security and user management features.
 
 ## License
 
