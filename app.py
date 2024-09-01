@@ -1,7 +1,5 @@
-
 import streamlit as st
 import pandas as pd
-import numpy as np
 import requests
 from textblob import TextBlob
 
@@ -13,10 +11,11 @@ def fetch_trend_data():
     try:
         response = requests.get(f"{BACKEND_URL}/trend_data")
         if response.status_code == 200:
-            trend_data = pd.read_json(response.content)
+            # Directly convert JSON response to DataFrame
+            trend_data = pd.DataFrame(response.json())
             return trend_data
         else:
-            st.error("Failed to fetch trend data from the backend.")
+            st.error(f"Failed to fetch trend data from the backend. Error: {response.text}")
             return None
     except Exception as e:
         st.error(f"Error fetching trend data: {e}")
