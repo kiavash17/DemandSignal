@@ -1,76 +1,88 @@
 
-# AI-Driven Demand Forecasting Dashboard (Versioned)
+# **ExplorerBee: AI-Driven Demand Forecasting Platform**
 
-This repository contains the AI-Driven Demand Forecasting platform, which now includes integrated advanced predictive analytics, financial data, and social media sentiment analysis, along with a unified script to run both the backend and frontend applications.
+ExplorerBee is an AI-driven demand forecasting platform designed to help startups identify their first 10 customers and refine their offerings based on real market needs. The platform integrates NLP-based analysis, LinkedIn profile scraping, automated outreach, A/B testing, response tracking, and feedback collection to provide actionable insights and continuous improvement suggestions for startups.
 
-## Features
+## **Features**
 
-- **Trend Analysis**: Visualize trends over time for different keywords using data fetched from a Flask backend.
-- **Demand Forecasting**: Predict future trends using Facebook Prophet's time series forecasting model.
-- **Financial Data Integration**: Analyze financial market data using Yahoo Finance API.
-- **Social Media Sentiment Analysis**: Perform sentiment analysis on real-time tweets related to specific market trends.
-- **Automated Environment Setup**: Automated scripts (`setup.sh` for Linux/macOS and `setup.ps1` for Windows) to install and configure Redis and other dependencies.
-- **Unified Execution**: A single script (`run_all.py`) to run both the backend and frontend simultaneously, streamlining the development workflow.
-- **Predictive Analytics**: Placeholder for future predictive analytics features.
+1. **Startup Onboarding and Information Gathering:**
+   - User-friendly form for startups to submit their details, including UVP, target audience, and industry.
+   - Data stored in a structured SQLite database.
 
-## Getting Started
+2. **LinkedIn Analytics and Targeting:**
+   - Automated scraping and analysis of LinkedIn profiles based on startup's market needs.
+   - Segmentation of profiles into categories like executives, managers, and engineers for targeted outreach.
 
-### Prerequisites
+3. **Automated Outreach and A/B Testing:**
+   - Automated messaging system for outreach using tailored messages.
+   - A/B testing to evaluate different versions of messages for engagement effectiveness.
+
+4. **Response Tracking and Feedback Collection:**
+   - Real-time tracking of responses and engagement metrics.
+   - Collection of feedback from recipients to refine outreach strategies.
+
+5. **Analytics Dashboard:**
+   - Visual insights and analytics dashboard to monitor outreach performance and feedback.
+   - Refinement suggestions based on performance data and feedback.
+
+6. **Support and Guidance:**
+   - Comprehensive user guides, support channels, and training materials to help startups leverage the platform effectively.
+
+## **Getting Started**
+
+### **Prerequisites**
 
 - Python 3.7 or higher
 - pip (Python package installer)
-- Redis server (automatically installed and configured by the setup script)
+- Flask and other required Python packages (listed in `requirements.txt`)
 
-### Installation
+### **Installation**
 
-1. **Clone the repository**:
-   ```
-   git clone https://github.com/your-username/ai-demand-forecasting-v2.1.git
-   cd ai-demand-forecasting-v2.1
-   ```
+1. **Clone the Repository:**
 
-2. **Run the Setup Script**:
-   - For **Linux/macOS**:
-     ```bash
-     bash setup.sh
-     ```
-   - For **Windows**:
-     ```powershell
-     ./setup.ps1
-     ```
-   This script will install Redis, configure it to start on boot, and ensure all necessary dependencies are installed.
+```bash
+git clone https://github.com/your-username/ExplorerBee.git
+cd ExplorerBee
+```
 
-3. **Install Python Packages**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+2. **Run the Setup Script:**
 
-### Running the App
+Use the provided `setup.sh` script to automatically install all necessary dependencies and set up the environment. Make sure to run this script with `sudo` to install system-level dependencies:
 
-1. **Data Preparation**:
-   - Generate sample data if not already present by running:
-   ```bash
-   python create_data.py
-   ```
+For Linux/macOS:
+```bash
+sudo bash setup.sh
+```
 
-2. **Unified Execution**:
-   - Run both the Flask backend and Streamlit frontend with a single command:
-   ```bash
-   python run_all.py
-   ```
+This script will install Python3, pip, necessary Python packages, and the spaCy English model.
 
-   This script will check if Redis is running and start it if necessary, then start the backend and frontend applications.
+### **Running the Application**
 
-### Deployment
+1. **Start the Flask Application:**
 
-To deploy the app on Streamlit Community Cloud or another platform, follow the steps in the README file.
+```bash
+python explorerbee.py
+```
 
-### Future Enhancements
+2. **Access the Platform:**
 
-- **Machine Learning Models**: Additional predictive models for enhanced forecasting.
-- **Expanded Data Sources**: More data sources for comprehensive demand insights.
-- **User Authentication and Management**: Enhanced security and user management features.
+Open your web browser and go to `http://127.0.0.1:5000/` to start using the ExplorerBee platform.
 
-## License
+### **Using the Platform**
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+- **Submit Startup Information:** Navigate to the home page and fill out the form with your startup's details.
+- **View Analytics:** After submitting your information, access the analytics dashboard to see the results of your outreach campaigns.
+- **Refine Strategy:** Use the insights and refinement suggestions provided by the platform to improve your offering and outreach strategy.
+
+### **Support and Documentation**
+
+- **User Guide:** [User Guide](static/user_guide.md)
+- **Contact Support:** Reach out via the support form on the platform or email [support@explorerbee.com](mailto:support@explorerbee.com).
+
+### **Contributing**
+
+Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
+
+### **License**
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

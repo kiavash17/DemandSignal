@@ -1,14 +1,6 @@
 
-streamlit
-pandas
-numpy<2.0
-textblob
-flask
-flask-executor
+Flask
+Flask-SQLAlchemy
 requests
-yfinance
-tweepy
-prophet
-matplotlib
-redis
-Flask-Caching
+beautifulsoup4
+spacy
