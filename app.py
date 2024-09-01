@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import requests
@@ -23,35 +22,10 @@ def fetch_trend_data():
         st.error(f"Error fetching trend data: {e}")
         return None
 
-@st.cache
-def fetch_financial_data(ticker='AAPL'):
-    try:
-        response = requests.get(f"{BACKEND_URL}/financial_data", params={'ticker': ticker})
-        if response.status_code == 200:
-            financial_data = pd.DataFrame(response.json())
-            return financial_data
-        else:
-            st.error(f"Failed to fetch financial data from the backend. Error: {response.text}")
-            return None
-    except Exception as e:
-        st.error(f"Error fetching financial data: {e}")
-        return None
-
-@st.cache
-def fetch_social_media_data(query='biotech'):
-    try:
-        response = requests.get(f"{BACKEND_URL}/social_media_data", params={'query': query})
-        if response.status_code == 200:
-            social_media_data = pd.DataFrame(response.json())
-            return social_media_data
-        else:
-            st.error(f"Failed to fetch social media data from the backend. Error: {response.text}")
-            return None
-    except Exception as e:
-        st.error(f"Error fetching social media data: {e}")
-        return None
-
 def forecast_demand(trend_data):
+    if trend_data is None:
+        st.error("No trend data available for forecasting.")
+        return None
     # Prepare data for Prophet
     trend_data.rename(columns={'date': 'ds', 'AI': 'y'}, inplace=True)
     model = Prophet()
@@ -60,7 +34,7 @@ def forecast_demand(trend_data):
     # Make future dataframe and predict
     future = model.make_future_dataframe(periods=30)
     forecast = model.predict(future)
-    return forecast
+    return model, forecast
 
 def fetch_sentiment_data():
     simulated_posts = [
@@ -89,21 +63,13 @@ if trend_data is not None:
 
     # Forecasting Section
     st.header('Demand Forecasting')
-    forecast = forecast_demand(trend_data)
-    fig, ax = plt.subplots()
-    model = Prophet()
-    model.plot(forecast, ax=ax)
-    st.pyplot(fig)
-
-st.header('Financial Data Analysis')
-financial_data = fetch_financial_data()
-if financial_data is not None:
-    st.line_chart(financial_data.set_index('Date')['Close'])
-
-st.header('Social Media Sentiment Analysis')
-social_media_data = fetch_social_media_data()
-if social_media_data is not None:
-    st.write(social_media_data)
+    model, forecast = forecast_demand(trend_data)
+    if forecast is not None:
+        fig, ax = plt.subplots()
+        model.plot(forecast, ax=ax)
+        st.pyplot(fig)
+    else:
+        st.error("Forecasting failed due to data issues.")
 
 st.header('Sentiment Analysis')
 sentiment_data = fetch_sentiment_data()
