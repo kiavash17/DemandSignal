@@ -22,14 +22,15 @@ def login():
 @app.route('/trend_data', methods=['GET'])
 def get_trend_data():
     try:
-        # Call the function to fetch data
+        # Fetch and prepare data
         trend_data = fetch_trend_data_async()
-        return jsonify(trend_data), 200
+        # Return JSON directly
+        return jsonify(trend_data)
     except Exception as e:
         return jsonify({"message": f"Error fetching trend data: {str(e)}"}), 500
 
 def fetch_trend_data_async():
-    # Load data and convert it to a dictionary format
+    # Read CSV and convert to dictionary format for JSON serialization
     trend_data = pd.read_csv('data_storage/simulated_google_trends_data.csv')
     return trend_data.to_dict(orient='records')
 
