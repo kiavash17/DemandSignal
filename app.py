@@ -1,83 +1,93 @@
 import streamlit as st
-import pandas as pd
 import requests
-from textblob import TextBlob
+from datetime import datetime
+import pandas as pd
 from prophet import Prophet
-import matplotlib.pyplot as plt
+from prophet.plot import plot_plotly
+import plotly.graph_objects as go
+import json
 
-# Backend URL
+# Define backend URL (ensure this matches your backend server's address)
 BACKEND_URL = "http://localhost:5000"
 
-@st.cache
-def fetch_trend_data():
-    try:
-        response = requests.get(f"{BACKEND_URL}/trend_data")
-        if response.status_code == 200:
-            trend_data = pd.DataFrame(response.json())
-            return trend_data
-        else:
-            st.error(f"Failed to fetch trend data from the backend. Error: {response.text}")
-            return None
-    except Exception as e:
-        st.error(f"Error fetching trend data: {e}")
-        return None
+# Streamlit page configuration
+st.set_page_config(page_title="ExplorerBee Dashboard", layout="wide")
 
-def forecast_demand(trend_data):
-    if trend_data is None:
-        st.error("No trend data available for forecasting.")
-        return None
-    # Prepare data for Prophet
-    trend_data.rename(columns={'date': 'ds', 'AI': 'y'}, inplace=True)
-    model = Prophet()
-    model.fit(trend_data[['ds', 'y']])
-    
-    # Make future dataframe and predict
-    future = model.make_future_dataframe(periods=30)
-    forecast = model.predict(future)
-    return model, forecast
+# Page title
+st.title("ExplorerBee: AI-Driven Demand Forecasting")
 
-def fetch_sentiment_data():
-    simulated_posts = [
-        "AI is revolutionizing biotech with new discoveries every day!",
-        "Machine learning is helping solve some of the hardest problems in science.",
-        "Biotech stocks are on the rise due to AI advancements.",
-        "There are concerns about the ethical implications of AI in healthcare.",
-        "Exciting times ahead with the intersection of AI and biotechnology."
-    ]
-    
-    sentiment_scores = [TextBlob(text).sentiment.polarity for text in simulated_posts]
-    
-    sentiment_df = pd.DataFrame({
-        'post': simulated_posts,
-        'sentiment_score': sentiment_scores
+# Sidebar for startup information input
+st.sidebar.header("Enter Startup Information")
+company_name = st.sidebar.text_input("Company Name")
+industry = st.sidebar.text_input("Industry")
+uvp = st.sidebar.text_area("Unique Value Proposition (UVP)")
+target_audience = st.sidebar.text_area("Target Audience")
+
+if st.sidebar.button("Submit"):
+    # Sending startup data to the backend for processing
+    response = requests.post(f"{BACKEND_URL}/submit_startup", data={
+        'company_name': company_name,
+        'industry': industry,
+        'uvp': uvp,
+        'target_audience': target_audience
     })
-    return sentiment_df
 
-# Streamlit Dashboard
-st.title('AI-Driven Demand Forecasting Dashboard')
-
-st.header('Trend Analysis')
-trend_data = fetch_trend_data()
-if trend_data is not None:
-    st.line_chart(trend_data.set_index('date'))
-
-    # Forecasting Section
-    st.header('Demand Forecasting')
-    model, forecast = forecast_demand(trend_data)
-    if forecast is not None:
-        fig, ax = plt.subplots()
-        model.plot(forecast, ax=ax)
-        st.pyplot(fig)
+    if response.status_code == 200:
+        st.sidebar.success("Startup information submitted successfully!")
     else:
-        st.error("Forecasting failed due to data issues.")
+        st.sidebar.error("Failed to submit startup information. Please try again.")
 
-st.header('Sentiment Analysis')
-sentiment_data = fetch_sentiment_data()
-st.write(sentiment_data)
+# Fetch trend data from backend
+st.header("Trend Analysis")
+keyword = st.text_input("Enter a keyword to analyze:")
+if st.button("Fetch Trend Data"):
+    response = requests.get(f"{BACKEND_URL}/fetch_trend_data", params={"keyword": keyword})
+    
+    if response.status_code == 200:
+        trend_data = response.json()
+        df_trend = pd.DataFrame(trend_data)
+        st.write(df_trend)
 
-st.header('Download Data')
-if trend_data is not None:
-    st.download_button(label="Download trend data as CSV", data=trend_data.to_csv(index=False), mime='text/csv')
+        # Plot trend data
+        st.line_chart(df_trend['value'])
 
-st.header('Predictive Analytics')
-st.write("Predictive analytics will be added here.")
+        # Forecasting with Prophet
+        df_trend['ds'] = pd.to_datetime(df_trend['date'])
+        df_trend['y'] = df_trend['value']
+        m = Prophet()
+        m.fit(df_trend[['ds', 'y']])
+        future = m.make_future_dataframe(periods=30)
+        forecast = m.predict(future)
+        fig = plot_plotly(m, forecast)
+        st.plotly_chart(fig)
+    else:
+        st.error("Failed to fetch trend data. Please try again.")
+
+# Fetch analytics data from backend
+st.header("Outreach and A/B Testing Analytics")
+if st.button("Load Analytics Data"):
+    response = requests.get(f"{BACKEND_URL}/analytics_data")
+    
+    if response.status_code == 200:
+        analytics_data = response.json()
+
+        # Display A/B test results
+        st.subheader("A/B Test Results")
+        ab_test_results = analytics_data.get("ab_test_results", {})
+        st.json(ab_test_results)
+
+        # Plot A/B test results
+        ab_test_df = pd.DataFrame(list(ab_test_results.items()), columns=['Version', 'Interested'])
+        fig = go.Figure(data=[go.Bar(x=ab_test_df['Version'], y=ab_test_df['Interested'])])
+        st.plotly_chart(fig)
+
+        # Display refinement suggestions
+        st.subheader("Refinement Suggestions")
+        refinement_suggestions = analytics_data.get("refinement_suggestions", "No suggestions available.")
+        st.write(refinement_suggestions)
+    else:
+        st.error("Failed to load analytics data. Please try again.")
+
+# Footer with contact information
+st.write("---")
+st.write("For support, contact us at [support@explorerbee.com](mailto:support@explorerbee.com).")
