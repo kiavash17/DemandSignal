@@ -7,6 +7,7 @@ import random
 import os
 import requests
 from bs4 import BeautifulSoup
+import json  # Import JSON for serialization/deserialization
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -35,7 +36,7 @@ class Startup(db.Model):
     insights = db.Column(db.Text, nullable=True)
     linkedin_profiles = db.Column(db.Text, nullable=True)
     outreach_results = db.Column(db.Text, nullable=True)
-    ab_test_results = db.Column(db.Text, nullable=True)
+    ab_test_results = db.Column(db.Text, nullable=True)  # Store as JSON string
     feedback = db.Column(db.Text, nullable=True)
     refinement_suggestions = db.Column(db.Text, nullable=True)
 
@@ -57,7 +58,10 @@ def submit_startup():
     # Simulated LinkedIn scraping and outreach
     linkedin_profiles = scrape_linkedin_profiles(industry, target_audience)
     outreach_results, ab_test_results = perform_outreach(linkedin_profiles)
-    
+
+    # Convert ab_test_results (a dictionary) to a JSON string
+    ab_test_results_json = json.dumps(ab_test_results)
+
     # Save startup data in database
     new_startup = Startup(
         company_name=company_name,
@@ -67,7 +71,7 @@ def submit_startup():
         insights=insights,
         linkedin_profiles=linkedin_profiles,
         outreach_results=outreach_results,
-        ab_test_results=ab_test_results,
+        ab_test_results=ab_test_results_json,  # Store as JSON string
         refinement_suggestions=generate_refinement_suggestions(ab_test_results)
     )
     db.session.add(new_startup)
@@ -124,6 +128,7 @@ def analytics_data():
     # Aggregate A/B test results
     aggregated_ab_test = {"Version A": 0, "Version B": 0}
     for startup in startups:
+        # Deserialize ab_test_results from JSON string back to a dictionary
         ab_test = json.loads(startup.ab_test_results)
         aggregated_ab_test["Version A"] += ab_test["Version A"]
         aggregated_ab_test["Version B"] += ab_test["Version B"]
